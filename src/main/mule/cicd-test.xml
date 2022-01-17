@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" 
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	  xmlns="http://www.mulesoft.org/schema/mule/core"
+	  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+	  
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core 
+	                     http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                         http://www.mulesoft.org/schema/mule/http 
+                         http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	          
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="eac2be97-3d8b-448c-b736-1c302f182d99" basePath="/bob">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	
+	
+	<flow name="testFlow" doc:id="9190a618-3dc1-42b8-a381-125290114d93" >
+		<http:listener doc:name="test listener01" doc:id="893c79c7-8680-486a-bacf-9e4f0cb42efe" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="9faa859d-8769-48ff-bbb0-6e7623d8edd1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+"Success"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#[payload]' doc:name="Set Payload" doc:id="bb9ffd0d-175a-4c96-9d7e-5fde57147cd5" />
+	</flow>
+</mule>
